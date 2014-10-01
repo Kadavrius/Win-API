@@ -1,0 +1,51 @@
+#include <tchar.h>
+#include <Windows.h>
+
+// Настройка визуального оформления элементов управления согласно настройкам пользователя.
+#pragma comment(linker, "\"/manifestdependency:type='win32' \
+name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' \
+publicKeyToken='6595b64144ccf1df' language='*'\"")
+
+INT WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmdLine, INT nCmdShow)
+{
+  MessageBox(NULL, TEXT("Загадайте число от 1 до 1000"), TEXT("Message box"), 
+        MB_OK | MB_ICONINFORMATION);
+
+	int first_number = 0;
+	int last_number = 500;
+	int temp_number;
+	int count = 1;
+  int nResult;
+	wchar_t result[50];
+
+	do
+	{
+		swprintf(result, 50, L"Число больше %d?", last_number);
+		nResult = MessageBox(NULL, result, TEXT("Угадайка"),
+			MB_YESNOCANCEL | MB_ICONINFORMATION);
+
+		if (nResult == IDNO)
+		{
+			temp_number = (last_number - first_number) / 2;
+			last_number = first_number + temp_number;
+		}
+		else if (nResult == IDYES)
+		{
+			temp_number = (last_number - first_number) / 2;
+			first_number = last_number;
+			last_number = first_number + temp_number;
+		}
+		else if (nResult == IDCANCEL)
+		{
+			swprintf(result, 50, L"Угадано за %d попыток", count);
+			MessageBox(NULL, result, TEXT(""), 0);
+		}
+		
+		count++;
+
+	}while (nResult != IDCANCEL);
+    
+	
+    
+    return 0;
+}
